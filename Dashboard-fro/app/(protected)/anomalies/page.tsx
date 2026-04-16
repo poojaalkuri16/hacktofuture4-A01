@@ -242,8 +242,8 @@ export default function AnomaliesPage() {
         {/* Severity Summary */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <InternalGlassPanel className="overflow-hidden">
-            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-yellow-300/30 to-transparent" />
-            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-yellow-300/20 blur-[20px] to-transparent" />
+            <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-yellow-300/30 to-transparent" />
+            <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-yellow-300/20 blur-[20px] to-transparent" />
             <div className="flex items-center justify-between">
               <div>
                 <p className="mb-1 text-sm text-gray-600 dark:text-white/60">Total Anomalies</p>
@@ -253,8 +253,8 @@ export default function AnomaliesPage() {
             </div>
           </InternalGlassPanel>
           <InternalGlassPanel className="overflow-hidden border-destructive/20">
-            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-red-400/30 to-transparent" />
-            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-red-400/20 blur-[20px] to-transparent" />
+            <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-red-400/30 to-transparent" />
+            <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-red-400/20 blur-[20px] to-transparent" />
             <div className="flex items-center justify-between">
               <div>
                 <p className="mb-1 text-sm text-destructive">Critical</p>
@@ -264,8 +264,8 @@ export default function AnomaliesPage() {
             </div>
           </InternalGlassPanel>
           <InternalGlassPanel className="overflow-hidden border-yellow-500/20">
-            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-yellow-300/30 to-transparent" />
-            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-yellow-300/20 blur-[20px] to-transparent" />
+            <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-yellow-300/30 to-transparent" />
+            <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-yellow-300/20 blur-[20px] to-transparent" />
             <div className="flex items-center justify-between">
               <div>
                 <p className="mb-1 text-sm text-yellow-500">Warnings</p>
@@ -275,8 +275,8 @@ export default function AnomaliesPage() {
             </div>
           </InternalGlassPanel>
           <InternalGlassPanel className={`overflow-hidden ${mlResolved.anomaly ? 'border-destructive/20' : 'border-emerald-500/20'}`}>
-            <div className={`absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent ${mlResolved.anomaly ? 'via-red-400/30' : 'via-emerald-400/30'} to-transparent`} />
-            <div className={`absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent ${mlResolved.anomaly ? 'via-red-400/20' : 'via-emerald-400/20'} blur-[20px] to-transparent`} />
+            <div className={`absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent ${mlResolved.anomaly ? 'via-red-400/30' : 'via-emerald-400/30'} to-transparent`} />
+            <div className={`absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent ${mlResolved.anomaly ? 'via-red-400/20' : 'via-emerald-400/20'} blur-[20px] to-transparent`} />
             <div className="flex items-center justify-between">
               <div>
                 <p className="mb-1 text-sm text-gray-600 dark:text-white/60">ML Signal</p>
@@ -309,7 +309,7 @@ export default function AnomaliesPage() {
                 >
                   <div className="flex items-start gap-2">
                     <div
-                      className={`w-2 h-2 rounded-full mt-1.5 flex-shrink-0 ${
+                      className={`w-2 h-2 rounded-full mt-1.5 shrink-0 ${
                         anomaly.severity === 'critical' ? 'bg-destructive' : 'bg-yellow-500'
                       }`}
                     />
@@ -331,8 +331,8 @@ export default function AnomaliesPage() {
 
           {/* Detailed Analysis */}
           <InternalGlassPanel className="lg:col-span-2 overflow-hidden">
-            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-400/30 to-transparent" />
-            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-400/20 blur-[20px] to-transparent" />
+            <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-blue-400/30 to-transparent" />
+            <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-blue-400/20 blur-[20px] to-transparent" />
             {selectedAnomaly ? (
               <div className="space-y-6">
                 <div>
@@ -366,7 +366,7 @@ export default function AnomaliesPage() {
                       </div>
                       <div className="h-2 bg-white/10 rounded-full overflow-hidden">
                         <div
-                          className="h-full bg-gradient-to-r from-primary to-accent"
+                          className="h-full bg-linear-to-r from-primary to-accent"
                           style={{ width: `${selectedAnomaly.confidence}%` }}
                         />
                       </div>
@@ -387,8 +387,8 @@ export default function AnomaliesPage() {
 
                 {/* Detection Info */}
                 <InternalGlassPanel density="compact" className="overflow-hidden">
-                  <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-400/30 to-transparent" />
-                  <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-400/20 blur-[20px] to-transparent" />
+                  <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-blue-400/30 to-transparent" />
+                  <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-blue-400/20 blur-[20px] to-transparent" />
                   <p className="mb-2 text-xs text-gray-500 dark:text-white/50">Detected</p>
                   <p className="text-sm font-medium text-gray-900 dark:text-white">{new Date(selectedAnomaly.timestamp).toLocaleString()}</p>
                 </InternalGlassPanel>

@@ -13,7 +13,7 @@ interface MLInsightCardProps {
   executionMode?: string;
   explanation?: string;
   severity?: string;
-  isSafeToExecute?: boolean;
+  isSafeToExecute?: boolean | null;
   loading?: boolean;
   compact?: boolean;
 }

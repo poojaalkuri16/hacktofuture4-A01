@@ -288,26 +288,26 @@ export default function IncidentsPage() {
         {/* Aggregate Metrics */}
         <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
           <InternalGlassPanel className="overflow-hidden">
-            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-400/20 to-transparent" />
-            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-400/20 blur-[20px] to-transparent" />
+            <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-blue-400/20 to-transparent" />
+            <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-blue-400/20 blur-[20px] to-transparent" />
             <p className="mb-1 text-sm text-gray-600 dark:text-white/60">Total Incidents</p>
             <p className="text-3xl font-bold text-gray-900 dark:text-white">{incidents.length}</p>
           </InternalGlassPanel>
           <InternalGlassPanel className="overflow-hidden">
-            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-400/20 to-transparent" />
-            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-400/20 blur-[20px] to-transparent" />
+            <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-blue-400/20 to-transparent" />
+            <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-blue-400/20 blur-[20px] to-transparent" />
             <p className="mb-1 text-sm text-gray-600 dark:text-white/60">Open Incidents</p>
             <p className="text-3xl font-bold text-destructive">{openIncidents.length}</p>
           </InternalGlassPanel>
           <InternalGlassPanel className="overflow-hidden">
-            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-green-500/20 to-transparent" />
-            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-green-500/20 blur-[20px] to-transparent" />
+            <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-green-500/20 to-transparent" />
+            <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-green-500/20 blur-[20px] to-transparent" />
             <p className="mb-1 text-sm text-gray-600 dark:text-white/60">Resolved Incidents</p>
             <p className="text-3xl font-bold text-green-500">{resolvedIncidents.length}</p>
           </InternalGlassPanel>
           <InternalGlassPanel className="overflow-hidden">
-            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-400/20 to-transparent" />
-            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-400/20 blur-[20px] to-transparent" />
+            <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-blue-400/20 to-transparent" />
+            <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-blue-400/20 blur-[20px] to-transparent" />
             <p className="mb-1 text-sm text-gray-600 dark:text-white/60">Avg MTTR</p>
             <p className="text-3xl font-bold text-accent">{avgMTTR}m</p>
           </InternalGlassPanel>
@@ -326,8 +326,8 @@ export default function IncidentsPage() {
                     className="relative w-full rounded-2xl border border-white/10 bg-[#0B1220]/40 p-4 text-left text-gray-900 dark:text-white transition-all hover:border-blue-500/20 hover:bg-blue-500/5"
                   >
                     {/* Premium top-edge glow effect */}
-                    <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-400/20 to-transparent" />
-                    <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-400/20 blur-[20px] to-transparent" />
+                    <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-blue-400/20 to-transparent" />
+                    <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-blue-400/20 blur-[20px] to-transparent" />
                     <div className="flex items-start justify-between gap-4">
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-2">
@@ -378,8 +378,8 @@ export default function IncidentsPage() {
                       density="none"
                       className="rounded-t-none rounded-b-2xl border border-t-0 border-white/10 p-4"
                     >
-                      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-400/20 to-transparent" />
-                      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-400/20 blur-[20px] to-transparent" />
+                      <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-blue-400/20 to-transparent" />
+                      <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-blue-400/20 blur-[20px] to-transparent" />
                       {incident.rootCause && (
                         <div>
                           <p className="mb-2 text-xs font-semibold tracking-wide text-gray-900 dark:text-white">ROOT CAUSE</p>

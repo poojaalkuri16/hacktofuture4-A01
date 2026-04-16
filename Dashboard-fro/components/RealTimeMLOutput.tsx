@@ -15,26 +15,31 @@ interface MLPrediction {
   timestamp: string;
 }
 
-export const RealTimeMLOutput: React.FC = () => {
+interface RealTimeMLOutputProps {
+  liveData?: unknown;
+}
+
+export const RealTimeMLOutput: React.FC<RealTimeMLOutputProps> = ({ liveData }) => {
   const { data, loading, error } = useAgentAnalyze(3000); // Auto-refresh every 3 seconds
   const [mlData, setMlData] = useState<MLPrediction | null>(null);
   const [refreshTime, setRefreshTime] = useState<Date>(new Date());
 
   useEffect(() => {
-    if (data?.mlInsight) {
+    const source = (liveData as any) || data?.mlInsight;
+    if (source) {
       setMlData({
-        anomalyDetected: data.mlInsight.anomaly || false,
-        suspectedService: data.mlInsight.suspectedService || 'Unknown',
-        confidence: Math.round((data.mlInsight.confidence || 0) * 100),
-        severity: data.mlInsight.severity || 'Unknown',
+        anomalyDetected: source.anomaly || source.anomalyDetected || false,
+        suspectedService: source.suspectedService || 'Unknown',
+        confidence: Math.round((source.confidence || 0) * 100),
+        severity: source.severity || 'Unknown',
         recommendedAction:
-          data.mlInsight.recommendedAction?.replace(/_/g, ' ') || 'No Action',
-        executionMode: data.mlInsight.isSafeToExecute ? 'AUTO-HEAL' : 'REVIEW',
+          source.recommendedAction?.replace(/_/g, ' ') || 'No Action',
+        executionMode: source.isSafeToExecute ? 'AUTO-HEAL' : 'REVIEW',
         timestamp: new Date().toLocaleTimeString(),
       });
       setRefreshTime(new Date());
     }
-  }, [data]);
+  }, [data, liveData]);
 
   const getSeverityColor = (severity: string) => {
     switch (severity.toLowerCase()) {

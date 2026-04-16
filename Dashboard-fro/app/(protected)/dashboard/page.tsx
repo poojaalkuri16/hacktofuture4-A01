@@ -702,19 +702,13 @@ export default function DashboardPage() {
         let mergedRawState = { latency: false, error: false, crash: false, overload: false };
         
         if (Array.isArray(states)) {
-          states.forEach(s => {
-            const sState = s?.state || s || {};
-            if (sState.latency === true || sState.latency === 'true') mergedRawState.latency = true;
-            if (sState.error === true || sState.error === 'true') mergedRawState.error = true;
-            if (sState.crash === true || sState.crash === 'true') mergedRawState.crash = true;
-            if (sState.overload === true || sState.overload === 'true') mergedRawState.overload = true;
+          states.forEach((simulation) => {
+            const sState = simulation.state;
+            if (sState.latency === true) mergedRawState.latency = true;
+            if (sState.error === true) mergedRawState.error = true;
+            if (sState.crash === true) mergedRawState.crash = true;
+            if (sState.overload === true) mergedRawState.overload = true;
           });
-        } else {
-          const sState = states?.state || states || {};
-          if (sState.latency === true) mergedRawState.latency = true;
-          if (sState.error === true) mergedRawState.error = true;
-          if (sState.crash === true) mergedRawState.crash = true;
-          if (sState.overload === true) mergedRawState.overload = true;
         }
 
         const formattedStates = {
@@ -1025,7 +1019,7 @@ export default function DashboardPage() {
                 executionMode={mlExecutionMode}
                 explanation={mlExplanation}
                 severity={mlSeverity}
-                isSafeToExecute={nodeMlResolved.isSafeToExecute}
+                isSafeToExecute={nodeMlResolved.isSafeToExecute ?? undefined}
                 loading={analyzeLoading}
               />
             </div>
