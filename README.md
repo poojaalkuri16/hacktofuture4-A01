@@ -154,7 +154,7 @@ http://localhost:5173
 ## Step 5: Check logs
 docker-compose logs -f
 
-## OPTION 3 — Kubernetes (Final Hackathon Demo)
+## OPTION 3 — Kubernetes
 ## Step 1: Start Minikube
 minikube start --driver=docker
 
@@ -181,8 +181,10 @@ kubectl get svc
 ## Step 7: Port forward (VERY IMPORTANT)
 Dashboard:
 kubectl port-forward svc/frontend 5173:80
+
 Agent:
 kubectl port-forward svc/agent-service 4000:4000
+
 Security:
 kubectl port-forward svc/security-service 3005:3005
 
