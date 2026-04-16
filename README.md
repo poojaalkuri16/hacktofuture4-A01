@@ -72,114 +72,131 @@ Mention all technologies used:
 
 ## Project Setup Instructions
 
-Provide clear steps to run your project:
+## Step 1: Go to project root
+cd "Nova Chat"
 
-```bash
-# Clone the repository
-git clone <repo-link>
+## Step 2: Install dependencies (all services)
+Do this for each service:
+cd auth-service
+npm install
 
-# Install dependencies
-...
+cd ../messaging-service
+npm install
 
-# Run the project
-...
-```
+cd ../presence-service
+npm install
 
-# Nova Chat Monorepo
+cd ../agent-service
+npm install
 
-## Quick start
+cd ../security-service
+npm install
 
-1. Install dependencies from the repository root:
-   ```bash
-   npm install
-   ```
+## Step 3: Setup environment variables
+Create .env files in each service.
+## Example (auth-service/.env)
+PORT=3001
+MONGO_URI=mongodb://<laptop-IP-Address>/nova-chat
 
-2. Copy environment variables:
-   ```bash
-   cp .env.example .env
-   ```
-   On Windows PowerShell:
-   ```powershell
-   Copy-Item .env.example .env
-   ```
+## messaging-service
+PORT=3002
+MONGO_URI=mongodb://<laptop-IP-Address>/nova-chat
 
-3. Start services in separate terminals as follows:
-   - Terminal 1:
-     ```bash
-     cd auth-service
-     npm start
-     ```
-   - Terminal 2:
-     ```bash
-     cd messaging-service
-     npm start
-     ```
-   - Terminal 3:
-     ```bash
-     cd presence-service
-     npm start
-     ```
-   - Terminal 4:
-     ```bash
-     cd frontend
-     npm run dev
-     ```
+## presence-service
+PORT=3003
 
-4. Open the frontend in your browser:
-   - `http://localhost:5173`
+## agent-service
+PORT=4000
+GROQ_API_KEY=your_key_here
 
-## Available commands
+## security-service
+PORT=3005
 
-- `npm start` — start local development for all services and frontend in one terminal (optional)
-- `npm run build` — build the frontend only
-- `npm run gateway` — start the gateway manually if you need it (optional)
-- `npm run check-ports` — check whether required ports are available
+## dashboard frontend
+NEXT_PUBLIC_AGENT_BASE_URL=http://localhost:4000
+NEXT_PUBLIC_SECURITY_BASE_URL=http://localhost:3005
 
-## Important notes
+## Step 4: Start MongoDB (VERY IMPORTANT)
+If local MongoDB:
+mongod
 
-- When working in separate-terminal mode, the frontend uses Vite dev proxy on `5173` to connect directly to backend services on `3001`, `3002`, and `3003`.
-- Do not set `VITE_API_URL` to the gateway address unless you are using the gateway.
-- If you see a network error at login, make sure `frontend` is running on port `5173` and the backend services are running on their respective ports.
+OR if using Docker:
+docker run -d -p 27017:27017 --name mongo mongo
 
-## Service ports
+## Step 5: Run dashboard frontend
+cd dashboard
+npm run dev
+Open:
+http://localhost:5173
 
-Default ports configured in `.env`:
+## Step 6: Test system
+Check:
+http://localhost:4000/agent/analyze
+http://localhost:3005/security/status
+http://localhost:3005/security/alerts
 
-- Gateway: `3000`
-- Auth Service: `3001`
-- Messaging Service: `3002`
-- Presence Service: `3003`
-- Frontend Vite dev server: `5173`
+## OPTION 2 — Docker (Better for demo)
+## Step 1: Build all services
+From root:
+docker-compose build
 
-## Port conflict troubleshooting (Windows)
+## Step 2: Start all services
+docker-compose up
+OR background:
+docker-compose up -d
 
-To see what is using a port:
+## Step 3: Check running containers
+docker ps
 
-```powershell
-netstat -ano | findstr :3000
-netstat -ano | findstr :3003
-```
+## Step 4: Open app
+http://localhost:5173
 
-If a process is using a port, kill it by PID:
+## Step 5: Check logs
+docker-compose logs -f
 
-```powershell
-taskkill /PID <PID> /F
-```
+## OPTION 3 — Kubernetes (Final Hackathon Demo)
+## Step 1: Start Minikube
+minikube start --driver=docker
 
-If you want to clear all default ports quickly:
+## Step 2: Enable Docker inside Minikube
+eval $(minikube docker-env) 
 
-```powershell
-Get-Process node -ErrorAction SilentlyContinue | Stop-Process -Force
-```
+## Step 3: Build images
+docker build -t nova-chat-auth-service ./auth-service
+docker build -t nova-chat-messaging-service ./messaging-service
+docker build -t nova-chat-presence-service ./presence-service
+docker build -t nova-chat-agent-service ./agent-service
+docker build -t nova-chat-security-service ./security-service
+docker build -t nova-chat-frontend ./dashboard
 
-## Frontend configuration
+## Step 4: Apply Kubernetes configs
+kubectl apply -f k8s/
 
-- Development uses Vite on `5173`
-- Vite proxies `/api/auth`, `/api/messaging`, `/api/presence`, and socket paths to the appropriate local backend service ports
-- When `VITE_API_URL` is empty, the frontend uses `window.location.origin` so it works when opened on `5173` or through the gateway on `3000`
+## Step 5: Check pods
+kubectl get pods
 
-## Notes
+## Step 6: Check services
+kubectl get svc
 
-- `npm start` is the recommended command for local development
-- `npm run start:prod` is for production-style startup after building the frontend
-- Do not bind two services to the same port; use `.env` to override if needed
+## Step 7: Port forward (VERY IMPORTANT)
+Dashboard:
+kubectl port-forward svc/frontend 5173:80
+Agent:
+kubectl port-forward svc/agent-service 4000:4000
+Security:
+kubectl port-forward svc/security-service 3005:3005
+
+## Step 8: Open app
+http://localhost:5173
+
+## FINAL TEST COMMANDS
+Check agent
+curl http://localhost:4000/agent/analyze
+
+Check security
+curl http://localhost:3005/security/status
+curl http://localhost:3005/security/alerts
+
+## Demo testing commands
+Trigger overload
+curl -X POST http://localhost:3002/simulate/overload
