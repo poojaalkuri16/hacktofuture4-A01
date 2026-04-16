@@ -2,10 +2,13 @@
 
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useAgentAnalyze } from '@/hooks/useAgentAnalyze';
+import { resolveMlData } from '@/lib/agent-analyze';
 import { LineChart, Line, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { ChevronDown } from 'lucide-react';
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from '@/components/ui/select';
 import { GlowCard } from '@/components/ui/spotlight-card';
+import MLInsightCard from '@/components/MlInsightCard';
+import MLEvidence from '@/components/MLEvidence';
 
 type ServiceFilter = 'all' | 'auth-service' | 'messaging-service' | 'presence-service';
 
@@ -63,7 +66,7 @@ const latencyFromService = (health: string, mode: string) => {
 };
 
 export default function ObservabilityPage() {
-  const { data: analyzeData, loading, error } = useAgentAnalyze(4000);
+  const { data: analyzeData, loading, error } = useAgentAnalyze(3000);
   const [selectedService, setSelectedService] = useState<ServiceFilter>('all');
   const [showDropdown, setShowDropdown] = useState(false);
   const [telemetryHistory, setTelemetryHistory] = useState<TelemetryPoint[]>([]);
@@ -78,6 +81,7 @@ export default function ObservabilityPage() {
   const kubernetesSignals = analyzeData?.kubernetesSignals;
   const rca = analyzeData?.rca;
   const decision = analyzeData?.decision;
+  const mlResolved = resolveMlData(analyzeData);
 
   const allServices = monitoring?.services || [];
   const scopedServices = allServices.filter((svc) =>
@@ -490,6 +494,42 @@ export default function ObservabilityPage() {
             </ResponsiveContainer>
           </GlowCard>
         </div>
+
+        {/* ML Insights Section */}
+        <GlowCard glowColor="blue" customSize={true} className="p-6">
+          <h2 className="mb-6 text-lg font-semibold text-gray-900 dark:text-white">ML Anomaly Detection & Insights</h2>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* ML Insight Card */}
+            <div>
+              <MLInsightCard
+                available={mlResolved.available}
+                anomalyDetected={mlResolved.anomaly === true}
+                confidence={mlResolved.confidence ?? undefined}
+                predictedIncidentType={mlResolved.predictedIncidentType ?? undefined}
+                recommendedAction={mlResolved.recommendedAction ?? undefined}
+                confidenceLevel={mlResolved.confidenceLevel ?? undefined}
+                executionMode={mlResolved.executionMode ?? undefined}
+                explanation={mlResolved.explanation ?? undefined}
+                severity={mlResolved.severity ?? undefined}
+                isSafeToExecute={mlResolved.isSafeToExecute ?? undefined}
+                loading={loading}
+              />
+            </div>
+
+            {/* ML Evidence */}
+            <div className="rounded-lg border border-white/10 bg-black/20 backdrop-blur-sm p-5">
+              <p className="text-sm font-semibold text-white mb-4">Contributing Evidence</p>
+              <MLEvidence
+                available={mlResolved.available}
+                contributingSignals={mlResolved.contributingSignals ?? []}
+                contributingFactors={mlResolved.contributingFactors ?? []}
+                classProbs={mlResolved.classProbs ?? {}}
+                anomalyScore={mlResolved.anomalyScore ?? undefined}
+                compact={true}
+              />
+            </div>
+          </div>
+        </GlowCard>
 
         {/* Log Viewer */}
         <GlowCard glowColor="blue" customSize={true} className="p-4">

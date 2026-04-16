@@ -41,6 +41,44 @@ router.post('/report/request', (req, res) => {
     suspicious: suspiciousResult,
   });
 });
+router.post('/simulate/attack', (req, res) => {
+  const eventsCount = Number(req.body?.count || 25);
+
+  const simulatedEvents = [];
+
+  for (let i = 0; i < eventsCount; i++) {
+    const event = {
+      sourceIp: normalizeIp('simulated-attacker'),
+      service: 'messaging-service',
+      endpoint: '/messages/send',
+      method: 'POST',
+      timestamp: sanitizeTimestamp(),
+    };
+
+    evaluateRateLimit(event);
+    detectSuspiciousTraffic(event);
+
+    simulatedEvents.push(event);
+  }
+
+  addAlert({
+    type: 'traffic_abuse',
+    severity: 'high',
+    service: 'security-service',
+    sourceIp: 'simulated-attacker',
+    message: `Simulated DDoS attack with ${eventsCount} requests`,
+    timestamp: sanitizeTimestamp(),
+  });
+
+  const status = getStatus();
+
+  res.json({
+    success: true,
+    message: 'Simulated attack executed',
+    eventsGenerated: eventsCount,
+    overall: status.overall,
+  });
+});
 
 router.post('/report/login-failure', (req, res) => {
   const event = {

@@ -6,6 +6,12 @@ import { AreaChart, Area, BarChart, Bar, LineChart, Line, XAxis, YAxis, Cartesia
 import { TrendingUp, Zap, AlertTriangle, Activity, CheckCircle } from 'lucide-react';
 import { GlowCard } from '@/components/ui/spotlight-card';
 import { InternalGlassPanel } from '@/components/ui/gradient-background-4';
+import { MLPipelineFlow } from '@/components/MLPipelineFlow';
+import { ModelArchitectureDiagram } from '@/components/ModelArchitectureDiagram';
+import { FeatureImportanceChart } from '@/components/FeatureImportanceChart';
+import { BeforeAfterImpact } from '@/components/BeforeAfterImpact';
+import { RealTimeMLOutput } from '@/components/RealTimeMLOutput';
+import { AIExplanationPanel } from '@/components/AIExplanationPanel';
 
 export default function LearningPage() {
   const store = useAppStore();
@@ -42,44 +48,67 @@ export default function LearningPage() {
       <div className="p-8 space-y-8">
         {/* Header */}
         <div>
-          <h1 className="text-4xl font-bold mb-2 text-gray-900 dark:text-white">Learning & Optimization</h1>
-          <p className="text-gray-600 dark:text-white/60">Track AI model improvements and operational cost savings over time</p>
+          <h1 className="text-4xl font-bold mb-2 text-gray-900 dark:text-white">Learning & AI Intelligence</h1>
+          <p className="text-gray-600 dark:text-white/60 max-w-2xl">
+            Comprehensive ML model insights, real-time predictions, and continuous learning optimization. 
+            Understand how Nova Chat detects anomalies, classifies incidents, and automatically remediates issues at scale.
+          </p>
         </div>
 
-        {/* Intelligence Growth Metrics */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <GlowCard glowColor="green" customSize={true} className="w-full h-auto min-h-[120px]">
-            <p className="text-sm text-gray-600 dark:text-white/60 mb-1">Model Accuracy</p>
-            <p className="text-3xl font-bold text-green-400">
-              {latestMetric ? Math.round(latestMetric.accuracy * 100) : 0}%
-            </p>
-            <p className="text-xs text-green-400 mt-2">+2.3% from baseline</p>
-          </GlowCard>
+        {/* ML PIPELINE VISUALIZATION */}
+        <MLPipelineFlow />
 
-          <GlowCard glowColor="blue" customSize={true} className="w-full h-auto min-h-[120px]">
-            <p className="text-sm text-gray-600 dark:text-white/60 mb-1">Precision Score</p>
-            <p className="text-3xl font-bold text-blue-400">
-              {latestMetric ? Math.round(latestMetric.precision * 100) : 0}%
-            </p>
-            <p className="text-xs text-blue-400 mt-2">+1.8% from baseline</p>
-          </GlowCard>
+        {/* MODEL ARCHITECTURE */}
+        <ModelArchitectureDiagram />
 
-          <GlowCard glowColor="orange" customSize={true} className="w-full h-auto min-h-[120px]">
-            <p className="text-sm text-gray-600 dark:text-white/60 mb-1">False Positives</p>
-            <p className="text-3xl font-bold text-orange-400">
-              {latestMetric ? latestMetric.falsePositives.toFixed(0) : 0}
-            </p>
-            <p className="text-xs text-orange-400 mt-2">-15% from baseline</p>
-          </GlowCard>
+        {/* REAL-TIME ML OUTPUT */}
+        <RealTimeMLOutput />
 
-          <GlowCard glowColor="purple" customSize={true} className="w-full h-auto min-h-[120px]">
-            <p className="text-sm text-gray-600 dark:text-white/60 mb-1">Est. OpEx Savings</p>
-            <p className="text-3xl font-bold text-purple-400">
-              ${latestMetric ? (latestMetric.opexSavings / 1000).toFixed(1) : 0}K
-            </p>
-            <p className="text-xs text-purple-400 mt-2">+$12.4K this month</p>
-          </GlowCard>
-        </div>
+        {/* AI EXPLANATION */}
+        <AIExplanationPanel />
+
+        {/* FEATURE IMPORTANCE */}
+        <FeatureImportanceChart />
+
+        {/* BEFORE VS AFTER IMPACT */}
+        <BeforeAfterImpact />
+
+        {/* INTELLIGENCE METRICS & TRENDS */}
+        <div>
+          <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">Intelligence Growth Metrics</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <GlowCard glowColor="green" customSize={true} className="w-full h-auto min-h-[120px]">
+              <p className="text-sm text-gray-600 dark:text-white/60 mb-1">Model Accuracy</p>
+              <p className="text-3xl font-bold text-green-400">
+                {latestMetric ? Math.round(latestMetric.accuracy * 100) : 0}%
+              </p>
+              <p className="text-xs text-green-400 mt-2">+2.3% from baseline</p>
+            </GlowCard>
+
+            <GlowCard glowColor="blue" customSize={true} className="w-full h-auto min-h-[120px]">
+              <p className="text-sm text-gray-600 dark:text-white/60 mb-1">Precision Score</p>
+              <p className="text-3xl font-bold text-blue-400">
+                {latestMetric ? Math.round(latestMetric.precision * 100) : 0}%
+              </p>
+              <p className="text-xs text-blue-400 mt-2">+1.8% from baseline</p>
+            </GlowCard>
+
+            <GlowCard glowColor="orange" customSize={true} className="w-full h-auto min-h-[120px]">
+              <p className="text-sm text-gray-600 dark:text-white/60 mb-1">False Positives</p>
+              <p className="text-3xl font-bold text-orange-400">
+                {latestMetric ? latestMetric.falsePositives.toFixed(0) : 0}
+              </p>
+              <p className="text-xs text-orange-400 mt-2">-15% from baseline</p>
+            </GlowCard>
+
+            <GlowCard glowColor="purple" customSize={true} className="w-full h-auto min-h-[120px]">
+              <p className="text-sm text-gray-600 dark:text-white/60 mb-1">Est. OpEx Savings</p>
+              <p className="text-3xl font-bold text-purple-400">
+                ${latestMetric ? (latestMetric.opexSavings / 1000).toFixed(1) : 0}K
+              </p>
+              <p className="text-xs text-purple-400 mt-2">+$12.4K this month</p>
+            </GlowCard>
+          </div>
 
         {/* Trend Charts */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -148,8 +177,9 @@ export default function LearningPage() {
             ) : null}
           </GlowCard>
         </div>
+        </div>
 
-        {/* System Optimization Insights */}
+        {/* System Optimization & Learning */}
         <InternalGlassPanel>
           <div className="mb-4 flex items-center gap-2">
             <Zap className="h-5 w-5 text-primary" />

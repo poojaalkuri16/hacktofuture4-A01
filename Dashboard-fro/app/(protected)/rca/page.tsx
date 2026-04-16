@@ -5,9 +5,10 @@ import { useAgentAnalyze } from '@/hooks/useAgentAnalyze';
 import { resolveMlData } from '@/lib/agent-analyze';
 import { ChevronDown, AlertTriangle, CheckCircle } from 'lucide-react';
 import { GlowCard } from '@/components/ui/spotlight-card';
+import MLEvidence from '@/components/MLEvidence';
 
 export default function RCAPage() {
-  const { data, loading, error, lastUpdated } = useAgentAnalyze(4000);
+  const { data, loading, error, lastUpdated } = useAgentAnalyze(3000);
 
   const monitoring = data?.monitoring;
   const rca = data?.rca;
@@ -128,16 +129,16 @@ export default function RCAPage() {
           {/* Incident List */}
           <GlowCard glowColor="purple" customSize={true} className="lg:col-span-1 p-3">
             <h2 className="mb-3 text-lg font-semibold text-gray-900 dark:text-white">Live RCA Feed</h2>
-            <div className="space-y-1.5 max-h-[28rem] overflow-y-auto">
+            <div className="space-y-1.5 max-h-112 overflow-y-auto">
               {loading ? (
                 <div className="rounded-lg border border-white/10 p-4 text-sm text-gray-600 dark:text-white/60">Loading RCA stream...</div>
               ) : (
                 <div className="w-full rounded-lg border border-gray-200 bg-white p-3 text-left dark:border-white/10 dark:bg-[#0B1220]/40">
                   <div className="flex items-start gap-2">
                     {hasRootCause ? (
-                      <AlertTriangle className="w-4 h-4 text-destructive mt-0.5 flex-shrink-0" />
+                      <AlertTriangle className="w-4 h-4 text-destructive mt-0.5 shrink-0" />
                     ) : (
-                      <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
+                      <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 shrink-0" />
                     )}
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-semibold truncate">{rca?.rootCause || 'No active incident detected'}</p>
@@ -245,7 +246,7 @@ export default function RCAPage() {
                 <div className={`p-3 rounded-lg border ${mlResolved.anomaly ? 'bg-red-500/10 border-red-500/20' : 'bg-emerald-500/10 border-emerald-500/20'}`}>
                   <h4 className="font-semibold text-sm mb-2">ML-Assisted Signal</h4>
                   {!mlResolved.available ? (
-                    <p className="text-sm text-gray-600 dark:text-white/60">ML data not available.</p>
+                    <p className="text-sm text-gray-600 dark:text-white/60">ML insight unavailable.</p>
                   ) : (
                     <div className="space-y-2 text-sm text-gray-600 dark:text-white/70">
                       <p>
@@ -268,6 +269,20 @@ export default function RCAPage() {
                     </div>
                   )}
                 </div>
+
+                {/* ML Evidence Detailed Analysis */}
+                {mlResolved.available && (
+                  <div className="rounded-lg border border-blue-500/30 bg-blue-500/5 p-4">
+                    <h3 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">ML Evidence Analysis</h3>
+                    <MLEvidence
+                      available={mlResolved.available}
+                      contributingSignals={mlResolved.contributingSignals ?? []}
+                      contributingFactors={mlResolved.contributingFactors ?? []}
+                      classProbs={mlResolved.classProbs ?? {}}
+                      anomalyScore={mlResolved.anomalyScore ?? undefined}
+                    />
+                  </div>
+                )}
               </div>
             ) : (
               <div className="h-full flex items-center justify-center text-gray-600 dark:text-white/60">

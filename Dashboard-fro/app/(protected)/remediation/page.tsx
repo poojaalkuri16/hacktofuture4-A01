@@ -4,7 +4,8 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Play, CheckCircle, AlertCircle, Zap } from 'lucide-react'
 import { InternalGlassPanel } from '@/components/ui/gradient-background-4'
 import { executeHeal, executeScaleHeal, fetchRemediationAnalyze } from '@/lib/remediation-api';
-import { AgentAnalyzeResponse } from '@/lib/agent-analyze';
+import { AgentAnalyzeResponse, resolveMlData } from '@/lib/agent-analyze';
+import MLInsightCard from '@/components/MlInsightCard';
 
 type RemediationMode = 'manual' | 'autonomous';
 type LogLevel = 'INFO' | 'ACTION' | 'SUCCESS' | 'ERROR';
@@ -49,7 +50,7 @@ export default function RemediationPage() {
 
   useEffect(() => {
     refreshAnalyze();
-    const timer = setInterval(refreshAnalyze, 4000);
+    const timer = setInterval(refreshAnalyze, 3000);
     return () => clearInterval(timer);
   }, [refreshAnalyze]);
 
@@ -185,6 +186,9 @@ export default function RemediationPage() {
     recovery: !hasIssue && monitoring?.overall === 'healthy'
   };
 
+  // ML data resolution
+  const mlResolved = useMemo(() => resolveMlData(analyze), [analyze]);
+
   return (
     <div className="flex-1 overflow-y-auto">
       <div className="p-8 space-y-8">
@@ -318,6 +322,23 @@ export default function RemediationPage() {
               </div>
             </div>
           </InternalGlassPanel>
+
+          {/* ML Safety & Confidence */}
+          <div>
+            <MLInsightCard
+              available={mlResolved.available}
+              anomalyDetected={mlResolved.anomaly === true}
+              confidence={mlResolved.confidence ?? undefined}
+              predictedIncidentType={mlResolved.predictedIncidentType ?? undefined}
+              recommendedAction={mlResolved.recommendedAction ?? undefined}
+              confidenceLevel={mlResolved.confidenceLevel ?? undefined}
+              executionMode={mlResolved.executionMode ?? undefined}
+              explanation={mlResolved.explanation ?? undefined}
+              severity={mlResolved.severity ?? undefined}
+              isSafeToExecute={mlResolved.isSafeToExecute ?? undefined}
+              loading={loading}
+            />
+          </div>
         </div>
 
         {/* Execution Logs */}
@@ -348,7 +369,7 @@ export default function RemediationPage() {
                 className={executionRecord.success ? 'border-green-500/25 bg-black/25' : 'border-red-500/25 bg-black/25'}
               >
                 <div className="flex items-start gap-3">
-                  <CheckCircle className={`mt-0.5 h-5 w-5 flex-shrink-0 ${executionRecord.success ? 'text-green-500' : 'text-red-500'}`} />
+                  <CheckCircle className={`mt-0.5 h-5 w-5 shrink-0 ${executionRecord.success ? 'text-green-500' : 'text-red-500'}`} />
                   <div className="flex-1">
                     <p className="mb-1 text-sm font-semibold text-gray-900 dark:text-white">{executionRecord.action}</p>
                     <p className="mb-2 text-xs text-gray-600 dark:text-white/60">{executionRecord.message}</p>
